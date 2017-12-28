@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>Vidyo.io Sample</h1>
+        <button onclick="joinCall()">Connect</button>
+        <div id="renderer" style="width:400px; height: 400px;"></div>
+    </body>
+
+    <script>
+        function onVidyoClientLoaded(status) {
+            console.log("onLoad = ", status);
+            if (status.state === "READY") {
+                console.log("ffffffffffffffffffffffffffffffffffff");
+                VC.CreateVidyoConnector({
+                    viewId: "renderer", // Div ID where the composited video will be rendered, see VidyoConnector.html;
+                    viewStyle: "VIDYO_CONNECTORVIEWSTYLE_Default", // Visual style of the composited renderer
+                    remoteParticipants: 15,     // Maximum number of participants to render
+                    logFileFilter: "error",
+                    logFileName:"",
+                    userData:""
+                }).then(function(vc) {
+                    console.log("create successfull of VIDYO");
+                    videoConnector = vc;
+                }).catch(function(error) {
+                    console.error("GetVersion failed = ", error);
+                });
+            }
+        }
+
+        function joinCall() {
+            videoConnector.Connect({
+                host: "prod.vidyo.io",
+                token: "cHJvdmlzaW9uAEF2aW5hc2hAZTBhYmVlLnZpZHlvLmlvADYzNjgxNzAxMDk0AAA4YTBmOGQ2NmNhZmQ3ZDU3NzA3YjZkOWQwODhhZTk4NDhhNzljNDY4Y2YwZWQ1ZTNkNDAwOGM4M2Q4ODI4ZjkwYjlmOWUzMDk1ZDM0MmFmNWMxZTA1NDVmNmFhZDZmY2Q=",
+                displayName: "Avinash",
+                resourceId: "demoRoom",
+                onSuccess: function() {
+                    console.log("YAYYYYYYYY VIDYO");
+                },
+                onFailure: function (reason) {
+                    console.log(":((((((((((((((((( VIDYO", reason);
+                },
+                onDisconnected: function (reason) {
+                    console.log("discnencted VIDYO", reason);
+                }
+            });
+        }
+    </script>
+    <script src="https://static.vidyo.io/4.1.18.8/javascript/VidyoClient/VidyoClient.js?onload=onVidyoClientLoaded"></script>
+</html>
